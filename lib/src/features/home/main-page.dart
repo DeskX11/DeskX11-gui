@@ -5,8 +5,7 @@ import '../../models/machine.dart';
 import '../../utils/db.dart';
 
 class MainPage extends StatefulWidget {
-  final String text;
-  MainPage({Key key, @required this.text}) : super(key: key);
+  MainPage({Key key}) : super(key: key);
 
   @override
   _MainPageState createState() => _MainPageState();
@@ -136,17 +135,7 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: Colors.black,
-        appBar: AppBar(title: Text(widget.text)),
-        body: Center(child: ListView(children: _items)),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            _create(context);
-          },
-          tooltip: 'New Machine',
-          child: Icon(Icons.library_add),
-        ));
+    return Scaffold(body: Center(child: ListView(children: _items)));
   }
 }
 
