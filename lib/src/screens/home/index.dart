@@ -6,7 +6,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: AppBarWidget(children: MainPage()),
+      body: AppBarWidget(child: MainPage()),
     );
   }
 }

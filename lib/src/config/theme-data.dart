@@ -62,6 +62,16 @@ class ThemeConfig {
         size: 16.0,
       ),
       errorColor: error,
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          primary: buttonText,
+        ),
+      ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: TextButton.styleFrom(
+          primary: buttonText,
+        ),
+      ),
       buttonTheme: ButtonThemeData(
         textTheme: ButtonTextTheme.primary,
         colorScheme: ColorScheme(

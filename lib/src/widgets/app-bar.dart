@@ -3,8 +3,8 @@ import '../utils/app-state-notifier.dart';
 import 'package:provider/provider.dart';
 
 class AppBarWidget extends StatefulWidget {
-  final Widget children;
-  AppBarWidget({Key key, @required this.children}) : super(key: key);
+  final Widget child;
+  AppBarWidget({Key key, @required this.child}) : super(key: key);
 
   @override
   _AppBarWidgetState createState() => _AppBarWidgetState();
@@ -38,7 +38,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
           ),
         ],
       ),
-      body: widget.children,
+      body: widget.child,
     );
   }
 }

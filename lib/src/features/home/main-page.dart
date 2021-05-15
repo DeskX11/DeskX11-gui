@@ -14,9 +14,9 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   Machine _machine = Machine();
 
-  List<Machine> _machines = [];
+  int _selectId;
 
-  TextStyle _style = TextStyle(color: Colors.white, fontSize: 24);
+  List<Machine> _machines = [];
 
   List<Widget> get _items => _machines.map((item) => format(item)).toList();
 
@@ -25,21 +25,21 @@ class _MainPageState extends State<MainPage> {
       key: Key(item.id.toString()),
       child: Padding(
           padding: EdgeInsets.fromLTRB(12, 6, 12, 4),
-          child: TextButton(
+          child: OutlinedButton(
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text(item.ip, style: _style),
+                  Flexible(child: Text(item.ip)),
                 ]),
             onPressed: () => _toggle(item),
           )),
       onDismissed: (DismissDirection direction) => _delete(item),
+      background: Container(color: Colors.pink),
     );
   }
 
   void _toggle(Machine item) async {
-    item.ip = item.ip + "!";
-    await DB.update(Machine.table, item);
+    //_selectId = item.id;
     refresh();
   }
 
@@ -135,7 +135,24 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Center(child: ListView(children: _items)));
+    return Scaffold(
+        body: Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Expanded(
+            flex: 1,
+            child: Column(children: [
+              Align(
+                  alignment: Alignment.centerRight,
+                  child: TextButton(
+                    child: Icon(Icons.create_new_folder),
+                    onPressed: () => {_create(context)},
+                  )),
+              Expanded(child: ListView(children: _items))
+            ])),
+        Expanded(flex: 2, child: Text('data1'))
+      ],
+    ));
   }
 }
 
