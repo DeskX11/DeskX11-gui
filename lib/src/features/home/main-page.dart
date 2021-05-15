@@ -20,17 +20,32 @@ class _MainPageState extends State<MainPage> {
 
   List<Widget> get _items => _machines.map((item) => format(item)).toList();
 
+  Machine _content = Machine();
+
   Widget format(Machine item) {
     return Dismissible(
       key: Key(item.id.toString()),
       child: Padding(
           padding: EdgeInsets.fromLTRB(12, 6, 12, 4),
           child: OutlinedButton(
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Flexible(child: Text(item.ip)),
-                ]),
+            child: Padding(
+                padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Flexible(
+                          child: Text(
+                        "NAME: " +
+                            item.ip +
+                            "\nIP " +
+                            item.ip +
+                            ":" +
+                            item.port.toString(),
+                        style: new TextStyle(
+                          fontSize: 14.0,
+                        ),
+                      )),
+                    ])),
             onPressed: () => _toggle(item),
           )),
       onDismissed: (DismissDirection direction) => _delete(item),
@@ -39,7 +54,7 @@ class _MainPageState extends State<MainPage> {
   }
 
   void _toggle(Machine item) async {
-    //_selectId = item.id;
+    _content = item;
     refresh();
   }
 
@@ -69,6 +84,14 @@ class _MainPageState extends State<MainPage> {
                 TextButton(child: Text('Save'), onPressed: () => _save())
               ],
               content: Column(children: [
+                TextField(
+                  autofocus: true,
+                  decoration: InputDecoration(
+                      labelText: 'Name', hintText: 'Name connection'),
+                  onChanged: (value) {
+                    _machine.name = value;
+                  },
+                ),
                 TextField(
                   autofocus: true,
                   decoration: InputDecoration(
@@ -145,12 +168,25 @@ class _MainPageState extends State<MainPage> {
               Align(
                   alignment: Alignment.centerRight,
                   child: TextButton(
-                    child: Icon(Icons.create_new_folder),
+                    child: Icon(
+                      Icons.create_new_folder,
+                      size: 25,
+                    ),
                     onPressed: () => {_create(context)},
                   )),
               Expanded(child: ListView(children: _items))
             ])),
-        Expanded(flex: 2, child: Text('data1'))
+        Expanded(
+            flex: 2,
+            child: Column(children: [
+              Padding(
+                  padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+                  child: _content.id == null
+                      ? Column(children: [Text("Create or select server")])
+                      : Row(children: [
+                          Text(_content.id == null ? '' : _content.name)
+                        ]))
+            ]))
       ],
     ));
   }

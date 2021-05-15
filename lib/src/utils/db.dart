@@ -13,7 +13,7 @@ abstract class DB {
     }
 
     try {
-      String _path = await getDatabasesPath() + 'test1';
+      String _path = await getDatabasesPath() + 'test4';
       _db = await openDatabase(_path, version: _version, onCreate: onCreate);
     } catch (ex) {
       print(ex);
@@ -21,7 +21,7 @@ abstract class DB {
   }
 
   static void onCreate(Database db, int version) async => await db.execute(
-      'CREATE TABLE machine_list (id INTEGER PRIMARY KEY NOT NULL, compression STRING, password STRING, encryption STRING, port INTEGER, cmd STRING, ip STRING)');
+      'CREATE TABLE machine_list (id INTEGER PRIMARY KEY NOT NULL, compression STRING, password STRING, encryption STRING, port INTEGER, cmd STRING, ip STRING, name STRING, pic STRING)');
 
   static Future<List<Map<String, dynamic>>> query(String table) async =>
       _db.query(table);
