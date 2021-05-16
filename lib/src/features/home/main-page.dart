@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../../models/machine.dart';
 import '../../utils/db.dart';
 import '../../widgets/button.dart';
+import './form-machine.dart';
 import 'dart:convert';
 
 class MainPage extends StatefulWidget {
@@ -15,8 +16,6 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   Machine _machine = Machine();
-
-  int _selectId;
 
   List<Machine> _machines = [];
 
@@ -38,7 +37,7 @@ class _MainPageState extends State<MainPage> {
                       Flexible(
                           child: Text(
                         "NAME: " +
-                            item.ip +
+                            item.name +
                             "\nIP " +
                             item.ip +
                             ":" +
@@ -62,6 +61,7 @@ class _MainPageState extends State<MainPage> {
 
   void _delete(Machine item) async {
     DB.delete(Machine.table, item);
+    _content = Machine();
     refresh();
   }
 
@@ -73,76 +73,26 @@ class _MainPageState extends State<MainPage> {
     refresh();
   }
 
-  void _create(BuildContext context) {
+  void _update() async {
+    Navigator.of(context).pop();
+    Machine item = _content;
+    await DB.update(Machine.table, item);
+    refresh();
+  }
+
+  void _create(BuildContext context, {bool edit = false}) {
+    if (!edit) {
+      _machine = Machine();
+      print('test');
+      print(_machine.name);
+    }
     showDialog(
         context: context,
         builder: (BuildContext context) {
-          return AlertDialog(
-              title: Text("Create New Machine"),
-              actions: <Widget>[
-                TextButton(
-                    child: Text('Cancel'),
-                    onPressed: () => Navigator.of(context).pop()),
-                TextButton(child: Text('Save'), onPressed: () => _save())
-              ],
-              content: Column(children: [
-                TextField(
-                  autofocus: true,
-                  decoration: InputDecoration(
-                      labelText: 'Name', hintText: 'Name connection'),
-                  onChanged: (value) {
-                    _machine.name = value;
-                  },
-                ),
-                TextField(
-                  autofocus: true,
-                  decoration: InputDecoration(
-                      labelText: 'Compression', hintText: 'Compression type'),
-                  onChanged: (value) {
-                    _machine.compression = value;
-                  },
-                ),
-                TextField(
-                  autofocus: true,
-                  decoration: InputDecoration(
-                      labelText: 'Password', hintText: 'Server password'),
-                  onChanged: (value) {
-                    _machine.password = value;
-                  },
-                ),
-                TextField(
-                  autofocus: true,
-                  decoration: InputDecoration(
-                      labelText: 'Encryption', hintText: 'Encryption type'),
-                  onChanged: (value) {
-                    _machine.encryption = value;
-                  },
-                ),
-                TextField(
-                  autofocus: true,
-                  decoration: InputDecoration(
-                      labelText: 'Port', hintText: 'Port server'),
-                  onChanged: (value) {
-                    _machine.port = int.parse(value);
-                  },
-                ),
-                TextField(
-                  autofocus: true,
-                  decoration: InputDecoration(
-                      labelText: 'cmd', hintText: 'Custom comand'),
-                  onChanged: (value) {
-                    _machine.cmd = value;
-                  },
-                ),
-                TextField(
-                  autofocus: true,
-                  decoration:
-                      InputDecoration(labelText: 'IP', hintText: 'IP Adress'),
-                  onChanged: (value) {
-                    _machine.ip = value;
-                  },
-                ),
-              ]));
+          return FormMachine(
+              machine: _machine,
+              save: () => edit ? _update() : _save(),
+              edit: edit);
         });
   }
 
@@ -154,8 +104,9 @@ class _MainPageState extends State<MainPage> {
 
   void refresh() async {
     List<Map<String, dynamic>> _results = await DB.query(Machine.table);
-    _machines = _results.map((item) => Machine.fromMap(item)).toList();
-    setState(() {});
+    setState(() {
+      _machines = _results.map((item) => Machine.fromMap(item)).toList();
+    });
   }
 
   @override
@@ -199,7 +150,10 @@ class _MainPageState extends State<MainPage> {
                                 Align(
                                     alignment: Alignment.centerLeft,
                                     child: ButtonWidget(
-                                      onPressed: () => {},
+                                      onPressed: () => {
+                                        _machine = _content,
+                                        _create(context, edit: true)
+                                      },
                                       text: "Edit",
                                       size: 18.0,
                                     )),

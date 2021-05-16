@@ -15,14 +15,14 @@ class Machine extends Model {
 
   Machine(
       {this.id,
-      this.name,
-      this.pic,
-      this.compression,
-      this.password,
-      this.encryption,
-      this.port,
-      this.cmd,
-      this.ip});
+      this.name = '',
+      this.pic = '',
+      this.compression = '',
+      this.password = '',
+      this.encryption = '',
+      this.port = 3000,
+      this.cmd = '',
+      this.ip = '127.0.0.1'});
 
   Map<String, dynamic> toMap() {
     Map<String, dynamic> map = {
