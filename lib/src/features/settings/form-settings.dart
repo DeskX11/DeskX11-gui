@@ -94,15 +94,19 @@ class _FormSettingState extends State<FormSetting> {
               value.length > 0 ? int.parse(value) : null;
         },
       ),
-      TextField(
-        autofocus: true,
-        controller: TextEditingController()..text = widget.settings.key,
-        decoration: InputDecoration(
-            labelText: 'Key to close',
-            hintText: 'Key to close',
-            errorText: _error['key'] ? 'Key to close error' : null),
-        onChanged: (value) {
-          widget.settings.key = value;
+      RawKeyboardListener(
+        child: TextField(
+          autofocus: true,
+          controller: TextEditingController()..text = widget.settings.key,
+          decoration: InputDecoration(
+              labelText: 'Key to close',
+              hintText: 'Key to close',
+              errorText: _error['key'] ? 'Key to close error' : null),
+        ),
+        focusNode: FocusNode(),
+        onKey: (RawKeyEvent event) {
+          var nameKey = event.data.logicalKey.debugName;
+          setState(() => widget.settings.key = nameKey);
         },
       ),
       Padding(
