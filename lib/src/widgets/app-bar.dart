@@ -33,7 +33,10 @@ class _AppBarWidgetState extends State<AppBarWidget> {
             icon: Icon(Icons.settings),
             tooltip: 'Setting',
             onPressed: () {
-              // setting
+              Navigator.pushNamed(
+                context,
+                '/settings',
+              );
             },
           ),
         ],
