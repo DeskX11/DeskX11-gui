@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 //import 'package:provider/provider.dart';
 import '../../models/machine.dart';
 import '../../utils/db.dart';
+import '../../widgets/button.dart';
+import 'dart:convert';
 
 class MainPage extends StatefulWidget {
   MainPage({Key key}) : super(key: key);
@@ -182,9 +184,100 @@ class _MainPageState extends State<MainPage> {
               Padding(
                   padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
                   child: _content.id == null
-                      ? Column(children: [Text("Create or select server")])
+                      ? Column(children: [
+                          Text(
+                            "Create or select server",
+                            style: new TextStyle(
+                              fontSize: 16.0,
+                            ),
+                          )
+                        ])
                       : Row(children: [
-                          Text(_content.id == null ? '' : _content.name)
+                          Container(
+                              width: MediaQuery.of(context).size.width * 0.3,
+                              child: Column(children: [
+                                Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: ButtonWidget(
+                                      onPressed: () => {},
+                                      text: "Edit",
+                                      size: 18.0,
+                                    )),
+                                Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      "\nNAME: " + _content.name,
+                                      textAlign: TextAlign.left,
+                                      style: new TextStyle(
+                                        fontSize: 16.0,
+                                      ),
+                                    )),
+                                Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      "\nIP " +
+                                          _content.ip +
+                                          ":" +
+                                          _content.port.toString(),
+                                      textAlign: TextAlign.left,
+                                      style: new TextStyle(
+                                        fontSize: 16.0,
+                                      ),
+                                    )),
+                                Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      "\nCompression: " + _content.compression,
+                                      textAlign: TextAlign.left,
+                                      style: new TextStyle(
+                                        fontSize: 16.0,
+                                      ),
+                                    )),
+                                Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      "\nPassword: " + _content.password,
+                                      textAlign: TextAlign.left,
+                                      style: new TextStyle(
+                                        fontSize: 16.0,
+                                      ),
+                                    )),
+                                Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      "\nEncryption: " + _content.encryption,
+                                      textAlign: TextAlign.left,
+                                      style: new TextStyle(
+                                        fontSize: 16.0,
+                                      ),
+                                    )),
+                                Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      "\nCMD: " + _content.cmd,
+                                      textAlign: TextAlign.left,
+                                      style: new TextStyle(
+                                        fontSize: 16.0,
+                                      ),
+                                    )),
+                              ])),
+                          Column(
+                            children: [
+                              Padding(
+                                  padding: EdgeInsets.fromLTRB(0, 30, 0, 30),
+                                  child: Image.memory(
+                                    Base64Decoder().convert(_content.pic),
+                                    width: 250,
+                                  )),
+                              Padding(
+                                  padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                  child: ButtonWidget(
+                                    onPressed: () => {},
+                                    text: "Connect",
+                                    size: 18.0,
+                                  ))
+                            ],
+                          )
                         ]))
             ]))
       ],

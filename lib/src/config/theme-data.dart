@@ -72,6 +72,11 @@ class ThemeConfig {
           primary: buttonText,
         ),
       ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          primary: buttonText,
+        ),
+      ),
       buttonTheme: ButtonThemeData(
         textTheme: ButtonTextTheme.primary,
         colorScheme: ColorScheme(
