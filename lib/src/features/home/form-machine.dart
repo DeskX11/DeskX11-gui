@@ -41,8 +41,9 @@ class _FormMachineState extends State<FormMachine> {
         });
   }
 
-  void validate() {
+  void validate(context) {
     clearValidate();
+    FocusScope.of(context).unfocus();
     if (widget.machine.name.length == 0) {
       setState(() => _error['name'] = true);
     }
@@ -55,7 +56,7 @@ class _FormMachineState extends State<FormMachine> {
     if (widget.machine.encryption.length == 0) {
       setState(() => _error['encryption'] = true);
     }
-    if (widget.machine.port > 65535) {
+    if (widget.machine.port == null || widget.machine.port > 65535) {
       setState(() => _error['port'] = true);
     }
     if (widget.machine.cmd.length == 0) {
@@ -82,7 +83,9 @@ class _FormMachineState extends State<FormMachine> {
           TextButton(
               child: Text('Cancel'),
               onPressed: () => Navigator.of(context).pop()),
-          TextButton(child: Text('Save'), onPressed: () => validate())
+          TextButton(
+              child: Text(widget.edit ? 'Edit' : 'Save'),
+              onPressed: () => validate(context))
         ],
         content: Column(children: [
           TextField(
@@ -150,7 +153,7 @@ class _FormMachineState extends State<FormMachine> {
                 hintText: 'Port server',
                 errorText: _error['port'] ? 'Error in port' : null),
             onChanged: (value) {
-              widget.machine.port = int.parse(value);
+              widget.machine.port = value.length > 0 ? int.parse(value) : null;
             },
           ),
           TextField(

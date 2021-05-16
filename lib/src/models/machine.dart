@@ -44,16 +44,17 @@ class Machine extends Model {
     return map;
   }
 
+  // нужен каст типов из-за того драйвер приводит строку с числом к инту
   static Machine fromMap(Map<String, dynamic> map) {
     return Machine(
         id: map['id'],
         pic: map['pic'],
-        name: map['name'],
-        compression: map['compression'],
-        password: map['password'],
-        encryption: map['encryption'],
+        name: map['name'].toString(),
+        compression: map['compression'].toString(),
+        password: map['password'].toString(),
+        encryption: map['encryption'].toString(),
         port: map['port'],
-        cmd: map['cmd'],
+        cmd: map['cmd'].toString(),
         ip: map['ip']);
   }
 }

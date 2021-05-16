@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-//import '../../utils/app-state-notifier.dart';
-//import 'package:provider/provider.dart';
 import '../../models/machine.dart';
 import '../../utils/db.dart';
 import '../../widgets/button.dart';
@@ -68,7 +66,9 @@ class _MainPageState extends State<MainPage> {
   void _save() async {
     Navigator.of(context).pop();
     Machine item = _machine;
-    await DB.insert(Machine.table, item);
+    var id = await DB.insert(Machine.table, item);
+    var content = await _selectById(id);
+    setState(() => _content = content);
     setState(() => _machine = Machine());
     refresh();
   }
@@ -80,11 +80,18 @@ class _MainPageState extends State<MainPage> {
     refresh();
   }
 
+  Future<Machine> _selectById(int id) async {
+    List<Map<String, dynamic>> _results = await DB.queryById(Machine.table, id);
+    if (_results.length > 0) {
+      return _results.map((item) => Machine.fromMap(item)).toList()[0];
+    } else {
+      return Machine();
+    }
+  }
+
   void _create(BuildContext context, {bool edit = false}) {
     if (!edit) {
       _machine = Machine();
-      print('test');
-      print(_machine.name);
     }
     showDialog(
         context: context,
@@ -238,42 +245,3 @@ class _MainPageState extends State<MainPage> {
     ));
   }
 }
-
-// class MainPage extends StatefulWidget {
-//   final String text;
-//   MainPage({Key key, @required this.text}) : super(key: key);
-
-//   @override
-//   _MainPageState createState() => _MainPageState();
-// }
-
-// class _MainPageState extends State<MainPage> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: Center(
-//         child: Column(children: [
-//           Row(children: [
-//             TextButton(
-//               child: Text('View Details'),
-//               onPressed: () {
-//                 Navigator.pushNamed(
-//                   context,
-//                   '/details/1',
-//                 );
-//               },
-//             ),
-//             Switch(
-//               value: Provider.of<AppStateNotifier>(context).isDarkMode,
-//               onChanged: (value) {
-//                 Provider.of<AppStateNotifier>(context, listen: false)
-//                     .updateTheme(value);
-//               },
-//             ),
-//             Text(widget.text)
-//           ])
-//         ]),
-//       ),
-//     );
-//   }
-// }
